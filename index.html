@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOCIAL BATCH ENGINE | v6.0 PRO</title>
+    <title>SOCIAL BATCH ENGINE | v7.0 REAL EXPORT</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@500;700&family=Playfair+Display:wght@700&display=swap"
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <script>
         tailwind.config = { theme: { extend: { colors: { dark: '#0a0a0a', border: '#222', primary: '#f43f5e' } } } }
     </script>
@@ -82,29 +84,33 @@
 <body class="flex h-screen overflow-hidden text-sm">
 
     <!-- SIDEBAR -->
-    <aside class="w-80 bg-black border-r border-border flex flex-col p-6 z-20 shadow-2xl">
+    <aside class="w-80 bg-black border-r border-border flex flex-col p-6 z-20 shadow-2xl overflow-y-auto">
         <h1 class="font-bold text-xl text-rose-500 mb-1">BATCH<span class="text-white">GENERATE</span></h1>
-        <p class="text-xs text-gray-500 mb-8">v6.0 AUTOMATION ENGINE</p>
+        <p class="text-xs text-gray-500 mb-8">v7.0 REAL EXPORT ENGINE</p>
 
-        <label class="text-[10px] font-bold text-gray-500 uppercase mb-2">1. ENTER YOUR HOOK / HEADLINE</label>
+        <label class="text-[10px] font-bold text-gray-500 uppercase mb-2">1. HOOK / HEADLINE</label>
         <textarea id="input-text"
             class="w-full bg-[#111] border border-border text-white p-4 rounded-lg h-32 outline-none focus:border-rose-500 text-lg font-medium resize-none mb-6"
             placeholder="e.g. 5 Secrets to Scale Your Business..."
             oninput="generateAll()">5 Secrets to Scale Your Business</textarea>
 
-        <label class="text-[10px] font-bold text-gray-500 uppercase mb-2">2. SUBTITLE / HANDLE</label>
+        <label class="text-[10px] font-bold text-gray-500 uppercase mb-2">2. HANDLE</label>
         <input type="text" id="input-sub"
             class="w-full bg-[#111] border border-border text-gray-400 p-3 rounded-lg outline-none focus:border-rose-500 mb-6"
             value="@DigitalEmpire" oninput="generateAll()">
 
+        <label class="text-[10px] font-bold text-gray-500 uppercase mb-2">3. CUSTOM IMAGE (Optional)</label>
+        <input type="file" id="img-upload" accept="image/*" onchange="handleImage(this)"
+            class="w-full bg-[#111] text-gray-400 text-xs p-2 rounded border border-border mb-6">
+
         <div class="mt-auto space-y-3">
-            <button onclick="downloadAll()"
+            <button onclick="downloadAll()" id="btn-dl"
                 class="w-full py-4 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg shadow-lg hover:shadow-rose-600/20 transition-all flex items-center justify-center gap-2">
-                ⬇️ DOWNLOAD ALL (12 FILES)
+                ⬇️ DOWNLOAD ALL ZIP
             </button>
             <a href="https://drive.google.com/open?id=1n30js_39wYzuddhM1-a6vtorfyZz7hNQ" target="_blank"
                 class="block w-full text-center py-3 border border-border rounded text-gray-500 hover:text-white hover:border-gray-500 transition-all">📂
-                Original Assets Database</a>
+                Assets Drive</a>
         </div>
     </aside>
 
@@ -112,17 +118,21 @@
     <main class="flex-1 bg-dark grid-bg overflow-y-auto p-10">
         <div class="max-w-7xl mx-auto">
             <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
-                <span class="bg-rose-500/10 text-rose-500 px-3 py-1 rounded text-sm border border-rose-500/20">GENERATED
-                    6 VARIATIONS</span>
-                <span class="text-gray-500 text-sm font-normal">Click any card to download individually</span>
+                <span class="bg-rose-500/10 text-rose-500 px-3 py-1 rounded text-sm border border-rose-500/20">PREVIEW
+                    MODE</span>
+                <span class="text-gray-500 text-sm font-normal">Click a card to download single PNG</span>
             </h2>
 
+            <!-- Cards Container -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="grid_container">
-                <!-- TEMPLATE 1: TWITTER THREAD -->
-                <div id="card_1"
-                    class="card-preview w-full aspect-square style-twitter p-8 flex flex-col justify-between relative rounded-xl overflow-hidden">
+
+                <!-- 1. TWITTER -->
+                <div onclick="downloadSingle(1)" id="card_1"
+                    class="card-preview w-full aspect-square style-twitter p-8 flex flex-col justify-between relative rounded-xl overflow-hidden shadow-xl">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+                        <div class="w-10 h-10 rounded-full bg-gray-200 overflow-hidden"><img
+                                src="https://ui-avatars.com/api/?name=DE&background=f43f5e&color=fff"
+                                class="w-full h-full object-cover"></div>
                         <div>
                             <div class="font-bold text-black author-handle">@DigitalEmpire</div>
                             <div class="text-gray-500 text-xs">Just now</div>
@@ -133,10 +143,11 @@
                     <div class="text-gray-500 text-sm">12K Retweets • 45K Likes</div>
                 </div>
 
-                <!-- TEMPLATE 2: DARK MODE NOTIFICATION -->
-                <div id="card_2"
-                    class="card-preview w-full aspect-square style-dark p-8 flex flex-col justify-center items-center text-center relative rounded-xl overflow-hidden">
-                    <div class="bg-[#111] border border-[#333] p-6 rounded-2xl w-full">
+                <!-- 2. DARK NOTIFICATION -->
+                <div onclick="downloadSingle(2)" id="card_2"
+                    class="card-preview w-full aspect-square style-dark p-8 flex flex-col justify-center items-center text-center relative rounded-xl overflow-hidden shadow-xl">
+                    <div class="absolute inset-0 z-0 opacity-20 user-img-bg bg-cover bg-center"></div>
+                    <div class="bg-[#111] border border-[#333] p-6 rounded-2xl w-full relative z-10 backdrop-blur-sm">
                         <div class="flex justify-between items-center mb-4">
                             <span class="text-xs text-gray-400 uppercase tracking-widest">Notification</span>
                             <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
@@ -146,48 +157,51 @@
                     </div>
                 </div>
 
-                <!-- TEMPLATE 3: BOLD YELLOW -->
-                <div id="card_3"
-                    class="card-preview w-full aspect-square style-bold p-8 flex flex-col justify-center relative rounded-xl overflow-hidden border-4 border-black">
-                    <div class="text-5xl font-black uppercase text-black leading-none mb-4 main-text">5 Secrets to Scale
-                        Your Business</div>
+                <!-- 3. BOLD ATTENTION -->
+                <div onclick="downloadSingle(3)" id="card_3"
+                    class="card-preview w-full aspect-square style-bold p-8 flex flex-col justify-center relative rounded-xl overflow-hidden border-4 border-black shadow-xl">
+                    <div class="text-5xl font-black uppercase text-black leading-none mb-4 main-text break-words">5
+                        Secrets to Scale Your Business</div>
                     <div class="bg-black text-white px-4 py-2 text-sm font-mono w-fit author-handle">@DigitalEmpire
                     </div>
                     <div class="absolute top-4 right-4 text-4xl">⚠️</div>
                 </div>
 
-                <!-- TEMPLATE 4: LUXURY GOLD -->
-                <div id="card_4"
-                    class="card-preview w-full aspect-square style-luxury p-10 flex flex-col justify-center items-center text-center relative rounded-xl overflow-hidden">
-                    <div class="border-t border-b border-[#d4af37] py-6 w-full">
-                        <div class="text-3xl italic font-serif text-[#d4af37] main-text">5 Secrets to Scale Your
-                            Business</div>
+                <!-- 4. LUXURY GOLD -->
+                <div onclick="downloadSingle(4)" id="card_4"
+                    class="card-preview w-full aspect-square style-luxury p-10 flex flex-col justify-center items-center text-center relative rounded-xl overflow-hidden shadow-xl">
+                    <div class="absolute inset-0 z-0 opacity-10 user-img-bg bg-cover bg-center"></div>
+                    <div class="border-t-2 border-b-2 border-[#d4af37] py-8 w-full relative z-10">
+                        <div class="text-3xl italic font-serif text-[#d4af37] main-text leading-snug">5 Secrets to Scale
+                            Your Business</div>
                     </div>
-                    <div class="mt-6 text-xs text-gray-500 tracking-[0.2em] uppercase author-handle">@DigitalEmpire
-                    </div>
+                    <div class="mt-6 text-xs text-gray-500 tracking-[0.2em] uppercase author-handle relative z-10">
+                        @DigitalEmpire</div>
                 </div>
 
-                <!-- TEMPLATE 5: INSTAGRAM GRADIENT -->
-                <div id="card_5"
-                    class="card-preview w-full aspect-square style-gradient p-8 flex flex-col justify-between relative rounded-xl overflow-hidden">
+                <!-- 5. GRADIENT PRO -->
+                <div onclick="downloadSingle(5)" id="card_5"
+                    class="card-preview w-full aspect-square style-gradient p-8 flex flex-col justify-between relative rounded-xl overflow-hidden shadow-xl">
                     <div class="bg-white/20 backdrop-blur w-fit px-3 py-1 rounded-full text-xs font-bold">PRO TIP</div>
-                    <div class="text-4xl font-extrabold text-white main-text text-center drop-shadow-lg">5 Secrets to
-                        Scale Your Business</div>
+                    <div class="text-4xl font-extrabold text-white main-text text-center drop-shadow-lg leading-tight">5
+                        Secrets to Scale Your Business</div>
                     <div class="text-center text-white/80 text-sm font-medium author-handle">@DigitalEmpire</div>
                 </div>
 
-                <!-- TEMPLATE 6: CYBERPUNK NEON -->
-                <div id="card_6"
-                    class="card-preview w-full aspect-square style-neon p-6 flex flex-col justify-center relative rounded-xl overflow-hidden">
+                <!-- 6. CYBERPUNK -->
+                <div onclick="downloadSingle(6)" id="card_6"
+                    class="card-preview w-full aspect-square style-neon p-6 flex flex-col justify-center relative rounded-xl overflow-hidden shadow-xl">
                     <div
                         class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20">
                     </div>
+                    <div class="absolute inset-0 z-0 opacity-30 user-img-bg bg-cover bg-center mix-blend-overlay"></div>
                     <div
-                        class="z-10 border border-[#00ff9d] p-6 h-full flex flex-col justify-center items-center text-center">
-                        <div class="text-3xl font-bold mb-4 main-text">5 Secrets to Scale Your Business</div>
+                        class="z-10 border border-[#00ff9d] p-6 h-full flex flex-col justify-center items-center text-center backdrop-blur-sm">
+                        <div class="text-3xl font-bold mb-4 main-text glitch-effect">5 Secrets to Scale Your Business
+                        </div>
                         <div class="bg-[#00ff9d] text-black px-3 py-1 text-xs font-bold author-handle">@DigitalEmpire
                         </div>
-                        <div class="mt-4 text-[10px] text-[#00ff9d] animate-pulse">● SYSTEM OVERRIDE</div>
+                        <div class="mt-4 text-[10px] text-[#00ff9d] font-mono">SYSTEM_OVERRIDE_INIT</div>
                     </div>
                 </div>
 
@@ -199,20 +213,60 @@
         function generateAll() {
             const text = document.getElementById('input-text').value;
             const sub = document.getElementById('input-sub').value;
-
             document.querySelectorAll('.main-text').forEach(el => el.innerText = text);
             document.querySelectorAll('.author-handle').forEach(el => el.innerText = sub);
         }
 
-        function downloadAll() {
-            alert('Generating 6 high-res images... (Simulated Download)');
-            // In a real implementation with html2canvas loaded properly:
-            // [1,2,3,4,5,6].forEach(id => {
-            //      html2canvas(document.getElementById('card_'+id)).then(canvas => { ...download... });
-            // });
+        function handleImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.querySelectorAll('.user-img-bg').forEach(el => {
+                        el.style.backgroundImage = `url(${e.target.result})`;
+                    });
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
         }
 
-        // Initial Trigger
+        async function downloadSingle(id) {
+            const el = document.getElementById('card_' + id);
+            try {
+                const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: null });
+                const link = document.createElement('a');
+                link.download = `digital-empire-design-${id}-${Date.now()}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            } catch (err) {
+                alert('Error generating image. Try simpler text.');
+            }
+        }
+
+        async function downloadAll() {
+            const btn = document.getElementById('btn-dl');
+            btn.innerText = "⏳ GENERATING 6 FILES...";
+            const zip = new JSZip();
+            const folder = zip.folder("social_batch_export");
+
+            try {
+                for (let i = 1; i <= 6; i++) {
+                    const el = document.getElementById('card_' + i);
+                    const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: null });
+                    const data = canvas.toDataURL().split(',')[1];
+                    folder.file(`design_${i}.png`, data, { base64: true });
+                }
+
+                const content = await zip.generateAsync({ type: "blob" });
+                saveAs(content, "social-batch-export.zip");
+                btn.innerText = "✅ DOWNLOAD COMPLETE";
+                setTimeout(() => btn.innerText = "⬇️ DOWNLOAD ALL ZIP", 3000);
+            } catch (err) {
+                console.error(err);
+                btn.innerText = "⚠️ ERROR";
+            }
+        }
+
+        // Init
         generateAll();
     </script>
 </body>

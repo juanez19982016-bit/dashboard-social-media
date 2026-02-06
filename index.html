@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOCIAL MEDIA PACK | Digital Empire Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b;
+            --sidebar: #18181b;
+            --card: #27272a;
+            --hover: #3f3f46;
+            --primary: #f43f5e;
+            --red: #f43f5e;
+            --orange: #f97316;
+            --green: #22c55e;
+            --text: #fafafa;
+            --subtext: #a1a1aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 260px;
+            background-color: var(--sidebar);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid #333;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .logo-sub {
+            font-size: 0.7rem;
+            color: var(--subtext);
+            margin-bottom: 15px;
+        }
+
+        .pack-badge {
+            background: linear-gradient(135deg, var(--red), var(--orange));
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: var(--subtext);
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background-color: var(--card);
+            color: var(--text);
+        }
+
+        .menu-item.active {
+            border-left: 3px solid var(--primary);
+        }
+
+        .menu-divider {
+            border-top: 1px solid #333;
+            margin: 15px 0;
+        }
+
+        .menu-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--subtext);
+            letter-spacing: 1px;
+            padding: 0 15px;
+            margin-bottom: 10px;
+        }
+
+        .main {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            background: var(--bg);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .welcome-text {
+            color: var(--subtext);
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--card);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            background: rgba(244, 63, 94, 0.2);
+            color: var(--red);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+        }
+
+        .card p {
+            color: var(--subtext);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: var(--text);
+            color: var(--bg);
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn.drive-btn {
+            background: linear-gradient(135deg, #4285f4, #34a853);
+            color: white;
+        }
+
+        .btn.drive-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(66, 133, 244, 0.3);
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-box {
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid var(--red);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+        }
+
+        .info-box h4 {
+            color: var(--red);
+            margin-bottom: 5px;
+        }
+
+        .info-box p {
+            color: var(--subtext);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .resource-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .resource-card {
+            background: var(--card);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+
+        .resource-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .resource-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .resource-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .resource-desc {
+            color: var(--subtext);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .file-count {
+            display: inline-block;
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--green);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Tool Styles */
+        .tool-container {
+            background: var(--card);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 900px;
+        }
+
+        .headline-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .headline-input-group input {
+            flex: 1;
+            padding: 12px;
+            background-color: var(--bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .headline-btn {
+            background: linear-gradient(135deg, var(--red), var(--orange));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .headline-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .headline-item {
+            background: var(--bg);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid var(--red);
+        }
+
+        .headline-item:hover {
+            transform: translateX(5px);
+        }
+
+        .headline-tag {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background: #333;
+            color: var(--subtext);
+            margin-right: 10px;
+        }
+
+        .headline-copy {
+            background: #222;
+            color: var(--subtext);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .headline-copy:hover {
+            background: var(--red);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .headline-input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <aside class="sidebar">
+        <div class="logo">📱 SOCIAL MEDIA</div>
+        <div class="logo-sub">PACK 2 DASHBOARD</div>
+
+        <div class="pack-badge">📢 SOCIAL MEDIA PACK</div>
+
+        <div class="menu-item active" onclick="showSection('home')">🏠 Home</div>
+
+        <div class="menu-divider"></div>
+        <div class="menu-label">Software Tool</div>
+        <div class="menu-item" onclick="showSection('headlineGen')">📢 Headline Generator</div>
+
+        <div class="menu-divider"></div>
+        <div class="menu-label">Resources</div>
+        <div class="menu-item" onclick="showSection('resources')">📂 Download Files</div>
+    </aside>
+
+    <main class="main">
+        <!-- HOME -->
+        <div id="home" class="section active">
+            <h1>Welcome to Social Media Pack! 📱</h1>
+            <p class="welcome-text">Tu acceso exclusivo a calendarios, hooks virales, hashtags y el Headline Generator.
+            </p>
+
+            <div class="info-box">
+                <h4>✨ Tu Pack Incluye</h4>
+                <p>30-Day Content Calendar + 200 Viral Hooks + 500 Hashtags + Templates + Viral Headline Generator
+                    Software.</p>
+            </div>
+
+            <h3 style="margin-bottom: 15px; color: var(--subtext);">ACCESO RÁPIDO</h3>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📢 Viral Headline Generator</h3>
+                        <span class="tag">SOFTWARE</span>
+                    </div>
+                    <p>Genera 15+ titulares virales para cualquier tema al instante.</p>
+                    <button class="btn" onclick="showSection('headlineGen')">Usar Herramienta</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📂 Descargar Archivos</h3>
+                        <span class="tag">DRIVE</span>
+                    </div>
+                    <p>Calendarios, hooks, hashtags y templates listos para usar.</p>
+                    <button class="btn" onclick="showSection('resources')">Ver Recursos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HEADLINE GENERATOR TOOL -->
+        <div id="headlineGen" class="section">
+            <h1>📢 Viral Headline Generator</h1>
+            <p class="welcome-text">Ingresa tu tema y obtén 15+ titulares irresistibles al instante.</p>
+
+            <div class="tool-container">
+                <div class="headline-input-group">
+                    <input type="text" id="topicInput"
+                        placeholder="Ingresa un tema (ej: 'Dieta Vegana', 'Bitcoin', 'Trabajo Remoto')..."
+                        onkeypress="if(event.key==='Enter')generateHeadlines()">
+                    <button class="headline-btn" onclick="generateHeadlines()">GENERAR</button>
+                </div>
+                <ul class="headline-list" id="headlineList"></ul>
+            </div>
+        </div>
+
+        <!-- RESOURCES -->
+        <div id="resources" class="section">
+            <h1>📂 Tus Recursos de Social Media</h1>
+            <p class="welcome-text">Descarga todos tus archivos directamente desde Google Drive.</p>
+
+            <div class="info-box">
+                <h4>📥 Instrucciones</h4>
+                <p>Haz clic en el botón para abrir la carpeta en Google Drive. Incluye calendarios, hooks, hashtags y
+                    templates.</p>
+            </div>
+
+            <div class="resource-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">📱</div>
+                    <div class="resource-title">Social Media Kit Completo</div>
+                    <div class="file-count">Todo Incluido</div>
+                    <div class="resource-desc">30-Day Content Calendar, 200 Viral Hooks, 500 Hashtags curados, y
+                        Templates editables para todas las plataformas.</div>
+                    <a href="https://drive.google.com/open?id=1n30js_39wYzuddhM1-a6vtorfyZz7hNQ" target="_blank"
+                        class="btn drive-btn">
+                        📁 Abrir en Google Drive
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.closest('.menu-item')?.classList.add('active');
+        }
+
+        const headlineTemplates = [
+            { type: "Cómo", text: "Cómo Dominar [TOPIC] en 30 Días" },
+            { type: "Error", text: "3 Errores que Estás Cometiendo con [TOPIC]" },
+            { type: "Lista", text: "10 Secretos de [TOPIC] que Nadie te Cuenta" },
+            { type: "Pregunta", text: "¿Está Muerto [TOPIC]? Lee Esto Antes de Decidir" },
+            { type: "Guía", text: "La Guía Definitiva de [TOPIC] para Principiantes" },
+            { type: "Fuerte", text: "Deja de Ignorar [TOPIC]. Podría Cambiar Todo." },
+            { type: "Futuro", text: "El Futuro de [TOPIC]: Qué Esperar" },
+            { type: "Negativo", text: "Por Qué Dejé [TOPIC] (Y Qué Hago Ahora)" },
+            { type: "Hack", text: "El Hack de 5 Minutos de [TOPIC] que Ahorra Horas" },
+            { type: "Dinero", text: "Cómo Monetizar [TOPIC] Empezando Hoy" },
+            { type: "Experto", text: "Lo que los Expertos NO te Dicen sobre [TOPIC]" },
+            { type: "Simple", text: "[TOPIC] Simplificado: Un Plan Paso a Paso" },
+            { type: "Historia", text: "Cómo Dominé [TOPIC] Sin Experiencia" },
+            { type: "Miedo", text: "No Intentes [TOPIC] Hasta Leer Esto" },
+            { type: "Comparar", text: "[TOPIC] vs Competidores: La Verdad Honesta" }
+        ];
+
+        function generateHeadlines() {
+            const topic = document.getElementById('topicInput').value.trim();
+            if (!topic) { alert("Por favor ingresa un tema!"); return; }
+
+            const list = document.getElementById('headlineList');
+            list.innerHTML = "";
+
+            headlineTemplates.forEach(t => {
+                const filled = t.text.replaceAll("[TOPIC]", topic);
+                const li = document.createElement('li');
+                li.className = 'headline-item';
+                li.innerHTML = `
+                    <div>
+                        <span class="headline-tag">${t.type}</span>
+                        <span class="headline-text">${filled}</span>
+                    </div>
+                    <button class="headline-copy" onclick="copyHeadline(this)">Copiar</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        function copyHeadline(btn) {
+            const text = btn.parentElement.querySelector('.headline-text').innerText;
+            navigator.clipboard.writeText(text);
+            btn.innerText = "¡Copiado!";
+            btn.style.background = "#22c55e";
+            btn.style.color = "white";
+            setTimeout(() => {
+                btn.innerText = "Copiar";
+                btn.style.background = "#222";
+                btn.style.color = "#a1a1aa";
+            }, 1500);
+        }
+    </script>
+</body>
+
+</html>

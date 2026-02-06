@@ -4,50 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOCIAL MEDIA OS | v5.0 ULTIMATE</title>
+    <title>SOCIAL BATCH ENGINE | v6.0 PRO</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Oswald:wght@500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@500;700&family=Playfair+Display:wght@700&display=swap"
         rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script>
-        tailwind.config = { theme: { extend: { colors: { dark: '#0a0a0a', darker: '#000000', border: '#222', primary: '#f43f5e', accent: '#fb7185' }, fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'], display: ['Oswald', 'sans-serif'] } } } }
+        tailwind.config = { theme: { extend: { colors: { dark: '#0a0a0a', border: '#222', primary: '#f43f5e' } } } }
     </script>
     <style>
         body {
             background-color: #050505;
-            color: #e5e5e5;
+            color: #fff;
         }
 
-        .canvas-area {
+        .grid-bg {
             background-image: radial-gradient(#222 1px, transparent 1px);
             background-size: 20px 20px;
         }
 
-        .draggable {
-            cursor: move;
-            user-select: none;
-        }
-
-        .glass {
-            background: rgba(30, 30, 30, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            height: 4px;
-            background: #333;
-            border-radius: 2px;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            background: #f43f5e;
-            border-radius: 50%;
+        .card-preview {
+            transition: all 0.3s;
             cursor: pointer;
+        }
+
+        .card-preview:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(244, 63, 94, 0.3);
+            border-color: #f43f5e;
+        }
+
+        .style-twitter {
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            color: #000;
+            border: 1px solid #e1e8ed;
+        }
+
+        .style-dark {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            border: 1px solid #333;
+        }
+
+        .style-bold {
+            font-family: 'Space Grotesk', sans-serif;
+            background: #fdf500;
+            color: #000;
+        }
+
+        .style-luxury {
+            font-family: 'Playfair Display', serif;
+            background: #1a1a1a;
+            color: #d4af37;
+            border: 1px solid #333;
+        }
+
+        .style-gradient {
+            background: linear-gradient(135deg, #FF0080, #7928CA);
+            color: white;
+            font-weight: 800;
+            font-family: 'Inter';
+        }
+
+        .style-neon {
+            background: #09090b;
+            border: 2px solid #00ff9d;
+            color: #00ff9d;
+            font-family: 'Space Grotesk';
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
         }
     </style>
 </head>
@@ -55,170 +82,138 @@
 <body class="flex h-screen overflow-hidden text-sm">
 
     <!-- SIDEBAR -->
-    <aside class="w-64 bg-darker border-r border-border flex flex-col hidden md:flex">
-        <div class="p-6 border-b border-border">
-            <h1 class="font-bold text-lg text-rose-500 tracking-tighter">CANVAS<span class="text-white">STUDIO</span>
-            </h1>
-            <p class="text-[10px] text-gray-500 mt-1">v5.0 PRO DESIGNER</p>
-        </div>
+    <aside class="w-80 bg-black border-r border-border flex flex-col p-6 z-20 shadow-2xl">
+        <h1 class="font-bold text-xl text-rose-500 mb-1">BATCH<span class="text-white">GENERATE</span></h1>
+        <p class="text-xs text-gray-500 mb-8">v6.0 AUTOMATION ENGINE</p>
 
-        <!-- Controls -->
-        <div class="p-6 space-y-6 overflow-y-auto">
+        <label class="text-[10px] font-bold text-gray-500 uppercase mb-2">1. ENTER YOUR HOOK / HEADLINE</label>
+        <textarea id="input-text"
+            class="w-full bg-[#111] border border-border text-white p-4 rounded-lg h-32 outline-none focus:border-rose-500 text-lg font-medium resize-none mb-6"
+            placeholder="e.g. 5 Secrets to Scale Your Business..."
+            oninput="generateAll()">5 Secrets to Scale Your Business</textarea>
 
-            <!-- Canvas Size -->
-            <div>
-                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">CANVAS SIZE</label>
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="resize(1080, 1080)"
-                        class="p-2 border border-border rounded text-xs hover:border-rose-500 hover:text-white text-gray-400">Post
-                        (1:1)</button>
-                    <button onclick="resize(1080, 1920)"
-                        class="p-2 border border-border rounded text-xs hover:border-rose-500 hover:text-white text-gray-400">Story
-                        (9:16)</button>
-                </div>
-            </div>
+        <label class="text-[10px] font-bold text-gray-500 uppercase mb-2">2. SUBTITLE / HANDLE</label>
+        <input type="text" id="input-sub"
+            class="w-full bg-[#111] border border-border text-gray-400 p-3 rounded-lg outline-none focus:border-rose-500 mb-6"
+            value="@DigitalEmpire" oninput="generateAll()">
 
-            <!-- Content -->
-            <div>
-                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">HEADLINE</label>
-                <textarea id="input-text" oninput="updateText()"
-                    class="w-full bg-[#111] border border-border text-white p-3 rounded h-20 outline-none focus:border-rose-500 resize-none"
-                    placeholder="Enter headline..."></textarea>
-            </div>
-
-            <!-- Typography -->
-            <div>
-                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">FONT SIZE</label>
-                <input type="range" min="20" max="150" value="60" class="w-full"
-                    oninput="updateStyle('fontSize', this.value + 'px')">
-            </div>
-
-            <!-- Backgrounds -->
-            <div>
-                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">BACKGROUND</label>
-                <div class="grid grid-cols-4 gap-2">
-                    <div onclick="setBg('linear-gradient(to bottom right, #f43f5e, #fb7185)')"
-                        class="w-8 h-8 rounded-full bg-gradient-to-br from-rose-500 to-rose-300 cursor-pointer border hover:scale-110 transition-transform">
-                    </div>
-                    <div onclick="setBg('linear-gradient(to bottom right, #3b82f6, #8b5cf6)')"
-                        class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 cursor-pointer border hover:scale-110 transition-transform">
-                    </div>
-                    <div onclick="setBg('#000')"
-                        class="w-8 h-8 rounded-full bg-black cursor-pointer border border-gray-700 hover:scale-110 transition-transform">
-                    </div>
-                    <div onclick="setBg('url(https://source.unsplash.com/random/1080x1080?abstract)')"
-                        class="w-8 h-8 rounded-full bg-gray-800 cursor-pointer border hover:scale-110 transition-transform flex items-center justify-center text-[8px]">
-                        IMG</div>
-                </div>
-            </div>
-
-            <button onclick="generateHeadline()"
-                class="w-full py-3 bg-gradient-to-r from-rose-600 to-orange-500 rounded font-bold text-white shadow-lg shadow-rose-900/20 hover:opacity-90 mt-4">✨
-                AI GENERATE HOOK</button>
-
+        <div class="mt-auto space-y-3">
+            <button onclick="downloadAll()"
+                class="w-full py-4 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-lg shadow-lg hover:shadow-rose-600/20 transition-all flex items-center justify-center gap-2">
+                ⬇️ DOWNLOAD ALL (12 FILES)
+            </button>
             <a href="https://drive.google.com/open?id=1n30js_39wYzuddhM1-a6vtorfyZz7hNQ" target="_blank"
-                class="block w-full text-center py-3 border border-border rounded mt-4 text-gray-400 hover:text-white text-xs">📂
-                Open Template Library</a>
+                class="block w-full text-center py-3 border border-border rounded text-gray-500 hover:text-white hover:border-gray-500 transition-all">📂
+                Original Assets Database</a>
         </div>
     </aside>
 
-    <!-- WORKSPACE -->
-    <main class="flex-1 flex flex-col items-center justify-center canvas-area relative overflow-hidden bg-[#111]">
+    <!-- CONTENT GRID -->
+    <main class="flex-1 bg-dark grid-bg overflow-y-auto p-10">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
+                <span class="bg-rose-500/10 text-rose-500 px-3 py-1 rounded text-sm border border-rose-500/20">GENERATED
+                    6 VARIATIONS</span>
+                <span class="text-gray-500 text-sm font-normal">Click any card to download individually</span>
+            </h2>
 
-        <!-- TOOLBAR -->
-        <div class="absolute top-4 glass px-4 py-2 rounded-full flex gap-4">
-            <button onclick="alert('Exporting High-Res PNG...')" class="text-xs font-bold hover:text-rose-500">DOWNLOAD
-                PNG</button>
-            <button onclick="alert('Exporting JSON Project...')" class="text-xs font-bold hover:text-rose-500">SAVE
-                PROJECT</button>
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="grid_container">
+                <!-- TEMPLATE 1: TWITTER THREAD -->
+                <div id="card_1"
+                    class="card-preview w-full aspect-square style-twitter p-8 flex flex-col justify-between relative rounded-xl overflow-hidden">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-gray-200"></div>
+                        <div>
+                            <div class="font-bold text-black author-handle">@DigitalEmpire</div>
+                            <div class="text-gray-500 text-xs">Just now</div>
+                        </div>
+                    </div>
+                    <div class="text-2xl font-medium leading-tight text-black main-text">5 Secrets to Scale Your
+                        Business</div>
+                    <div class="text-gray-500 text-sm">12K Retweets • 45K Likes</div>
+                </div>
 
-        <!-- CANVAS CONTAINER -->
-        <div id="canvas-wrapper"
-            class="relative shadow-2xl transition-all duration-500 bg-black overflow-hidden flex items-center justify-center text-center p-8"
-            style="width: 500px; height: 500px;">
+                <!-- TEMPLATE 2: DARK MODE NOTIFICATION -->
+                <div id="card_2"
+                    class="card-preview w-full aspect-square style-dark p-8 flex flex-col justify-center items-center text-center relative rounded-xl overflow-hidden">
+                    <div class="bg-[#111] border border-[#333] p-6 rounded-2xl w-full">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-xs text-gray-400 uppercase tracking-widest">Notification</span>
+                            <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                        </div>
+                        <div class="text-xl font-bold text-white mb-2 main-text">5 Secrets to Scale Your Business</div>
+                        <div class="text-gray-500 text-xs author-handle">@DigitalEmpire</div>
+                    </div>
+                </div>
 
-            <!-- Draggable Text -->
-            <div id="canvas-text"
-                class="draggable font-display font-bold text-white leading-tight uppercase relative z-10"
-                style="font-size: 60px;">
-                VIRAL POST<br>GENERATOR
+                <!-- TEMPLATE 3: BOLD YELLOW -->
+                <div id="card_3"
+                    class="card-preview w-full aspect-square style-bold p-8 flex flex-col justify-center relative rounded-xl overflow-hidden border-4 border-black">
+                    <div class="text-5xl font-black uppercase text-black leading-none mb-4 main-text">5 Secrets to Scale
+                        Your Business</div>
+                    <div class="bg-black text-white px-4 py-2 text-sm font-mono w-fit author-handle">@DigitalEmpire
+                    </div>
+                    <div class="absolute top-4 right-4 text-4xl">⚠️</div>
+                </div>
+
+                <!-- TEMPLATE 4: LUXURY GOLD -->
+                <div id="card_4"
+                    class="card-preview w-full aspect-square style-luxury p-10 flex flex-col justify-center items-center text-center relative rounded-xl overflow-hidden">
+                    <div class="border-t border-b border-[#d4af37] py-6 w-full">
+                        <div class="text-3xl italic font-serif text-[#d4af37] main-text">5 Secrets to Scale Your
+                            Business</div>
+                    </div>
+                    <div class="mt-6 text-xs text-gray-500 tracking-[0.2em] uppercase author-handle">@DigitalEmpire
+                    </div>
+                </div>
+
+                <!-- TEMPLATE 5: INSTAGRAM GRADIENT -->
+                <div id="card_5"
+                    class="card-preview w-full aspect-square style-gradient p-8 flex flex-col justify-between relative rounded-xl overflow-hidden">
+                    <div class="bg-white/20 backdrop-blur w-fit px-3 py-1 rounded-full text-xs font-bold">PRO TIP</div>
+                    <div class="text-4xl font-extrabold text-white main-text text-center drop-shadow-lg">5 Secrets to
+                        Scale Your Business</div>
+                    <div class="text-center text-white/80 text-sm font-medium author-handle">@DigitalEmpire</div>
+                </div>
+
+                <!-- TEMPLATE 6: CYBERPUNK NEON -->
+                <div id="card_6"
+                    class="card-preview w-full aspect-square style-neon p-6 flex flex-col justify-center relative rounded-xl overflow-hidden">
+                    <div
+                        class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20">
+                    </div>
+                    <div
+                        class="z-10 border border-[#00ff9d] p-6 h-full flex flex-col justify-center items-center text-center">
+                        <div class="text-3xl font-bold mb-4 main-text">5 Secrets to Scale Your Business</div>
+                        <div class="bg-[#00ff9d] text-black px-3 py-1 text-xs font-bold author-handle">@DigitalEmpire
+                        </div>
+                        <div class="mt-4 text-[10px] text-[#00ff9d] animate-pulse">● SYSTEM OVERRIDE</div>
+                    </div>
+                </div>
+
             </div>
-
-            <!-- BG Overlay -->
-            <div id="canvas-bg" class="absolute inset-0 z-0 bg-gradient-to-br from-rose-600 to-purple-900 opacity-80">
-            </div>
-            <img id="bg-img" class="absolute inset-0 w-full h-full object-cover z-[-1] opacity-50 hidden" src="">
         </div>
-
-        <p class="absolute bottom-4 text-xs text-gray-600 font-mono">CANVAS RESOLUTION: <span
-                id="res-display">1080x1080</span></p>
-
     </main>
 
     <script>
-        const canvasText = document.getElementById('canvas-text');
-        const canvasWrapper = document.getElementById('canvas-wrapper');
-        const canvasBg = document.getElementById('canvas-bg');
+        function generateAll() {
+            const text = document.getElementById('input-text').value;
+            const sub = document.getElementById('input-sub').value;
 
-        function updateText() {
-            canvasText.innerHTML = document.getElementById('input-text').value.replace(/\n/g, '<br>');
+            document.querySelectorAll('.main-text').forEach(el => el.innerText = text);
+            document.querySelectorAll('.author-handle').forEach(el => el.innerText = sub);
         }
 
-        function updateStyle(prop, val) {
-            canvasText.style[prop] = val;
+        function downloadAll() {
+            alert('Generating 6 high-res images... (Simulated Download)');
+            // In a real implementation with html2canvas loaded properly:
+            // [1,2,3,4,5,6].forEach(id => {
+            //      html2canvas(document.getElementById('card_'+id)).then(canvas => { ...download... });
+            // });
         }
 
-        function setBg(bg) {
-            if (bg.includes('url')) {
-                // Image handling simulated
-                canvasBg.style.background = '#000';
-                canvasBg.style.opacity = '0.5';
-            } else {
-                canvasBg.style.background = bg;
-                canvasBg.style.opacity = '1';
-            }
-        }
-
-        function resize(w, h) {
-            // Scale down for preview
-            const scale = 500 / Math.max(w, h); // fit to view
-            const viewW = w * 0.5; // simple scaling for demo
-
-            if (h > w) { // Story
-                canvasWrapper.style.width = '300px';
-                canvasWrapper.style.height = '533px';
-                document.getElementById('res-display').innerText = '1080x1920 (Story)';
-            } else { // Post
-                canvasWrapper.style.width = '500px';
-                canvasWrapper.style.height = '500px';
-                document.getElementById('res-display').innerText = '1080x1080 (Post)';
-            }
-        }
-
-        function generateHeadline() {
-            const hooks = [
-                "STOP SCROLLING NOW",
-                "3 SECRETS REVEALED",
-                "POV: YOU TRIED THIS",
-                "THIS CHANGED MY LIFE",
-                "NOBODY TELLS YOU THIS"
-            ];
-            const rand = hooks[Math.floor(Math.random() * hooks.length)];
-            document.getElementById('input-text').value = rand;
-            updateText();
-        }
-
-        // Draggable Logic (Simplified for Demo)
-        let isDragging = false;
-        canvasWrapper.addEventListener('mousedown', () => { isDragging = true; });
-        window.addEventListener('mouseup', () => { isDragging = false; });
-        canvasWrapper.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                // In a real app this would calculate offset
-                // canvasText.style.transform = ...
-            }
-        });
+        // Initial Trigger
+        generateAll();
     </script>
 </body>
 
